@@ -1,3 +1,11 @@
+---
+import "../styles/global.css";
+import ThemeScript from "../components/ThemeScript.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+
+import AppContainer from "./AppContainer.astro";
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -5,18 +13,16 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content="Quiz app for learning" />
+		<title>Quiz App</title>
+		<ThemeScript />
 	</head>
-	<body>
-		<slot />
+	<body
+		class="min-h-screen m-0 w-full h-full bg-background text-primary relative"
+	>
+		<ThemeToggle />
+		<AppContainer>
+			<slot />
+		</AppContainer>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
