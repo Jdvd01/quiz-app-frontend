@@ -2,8 +2,6 @@
 import "../styles/global.css";
 import ThemeScript from "../components/ThemeScript.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
-
-import AppContainer from "./AppContainer.astro";
 ---
 
 <!doctype html>
@@ -21,8 +19,10 @@ import AppContainer from "./AppContainer.astro";
 		class="min-h-screen m-0 w-full h-full bg-background text-primary relative"
 	>
 		<ThemeToggle />
-		<AppContainer>
+		<section
+			class="w-full min-w-[var(--responsive-min-device)] max-w-[var(--responsive-max-device)] px-4 tablet:px-8 desktop:px-32"
+		>
 			<slot />
-		</AppContainer>
+		</section>
 	</body>
 </html>
