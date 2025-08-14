@@ -1,14 +1,8 @@
 ---
 import { QuizForm } from "@/components/quiz/QuizForm";
-import Layout from "../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout>
-	<QuizForm
-		client:load
-		onSubmit={(data) => {
-			console.log("Form submitted:", data);
-			// Handle form submission here
-		}}
-	/>
+	<QuizForm client:load />
 </Layout>
