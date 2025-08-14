@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,18 +19,9 @@ import {
 } from "@/components/ui/card";
 import { BookOpen, Brain, Globe } from "lucide-react";
 
-interface QuizFormProps {
-	onSubmit: (data: { tema: string; nivel: string; idioma: string }) => void;
-}
-
-export function QuizForm({ onSubmit }: QuizFormProps) {
-	const [tema, setTema] = useState("");
-	const [nivel, setNivel] = useState("");
-	const [idioma, setIdioma] = useState("");
-
+export function QuizForm() {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		onSubmit({ tema, nivel, idioma });
 	};
 
 	return (
@@ -64,8 +54,8 @@ export function QuizForm({ onSubmit }: QuizFormProps) {
 								id="theme"
 								type="text"
 								placeholder="E.g.: History, Science, Sports..."
-								value={tema}
-								onChange={(e) => setTema(e.target.value)}
+								// value={tema}
+								// onChange={(e) => setTema(e.target.value)}
 								className="border-primary/20 focus:border-primary"
 								required
 							/>
@@ -76,7 +66,11 @@ export function QuizForm({ onSubmit }: QuizFormProps) {
 								<Brain className="w-4 h-4 text-primary" />
 								Level
 							</Label>
-							<Select value={nivel} onValueChange={setNivel} required>
+							<Select
+								// value={nivel}
+								// onValueChange={setNivel}
+								required
+							>
 								<SelectTrigger className="border-primary/20 focus:border-primary w-full">
 									<SelectValue placeholder="Select your level" />
 								</SelectTrigger>
@@ -114,7 +108,11 @@ export function QuizForm({ onSubmit }: QuizFormProps) {
 								<Globe className="w-4 h-4 text-primary" />
 								Idioma
 							</Label>
-							<Select value={idioma} onValueChange={setIdioma} required>
+							<Select
+								// value={idioma}
+								// onValueChange={setIdioma}
+								required
+							>
 								<SelectTrigger className="border-primary/20 focus:border-primary w-full">
 									<SelectValue placeholder="Selecciona el idioma" />
 								</SelectTrigger>
