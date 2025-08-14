@@ -15,12 +15,10 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 		<title>Quiz App</title>
 		<ThemeScript />
 	</head>
-	<body
-		class="min-h-screen m-0 w-full h-full bg-background text-primary relative"
-	>
+	<body class="bg-background text-primary relative">
 		<ThemeToggle />
 		<section
-			class="w-full min-w-[var(--responsive-min-device)] max-w-[var(--responsive-max-device)] px-4 tablet:px-8 desktop:px-32"
+			class="w-full min-w-[var(--responsive-min-device)] max-w-[var(--responsive-max-device)] px-4 tablet:px-8 desktop:px-32 flex flex-col justify-center items-center min-h-screen"
 		>
 			<slot />
 		</section>
