@@ -1,8 +1,8 @@
 ---
-import { QuizForm } from "@/components/quiz/QuizForm";
+import { Router } from "@/components/Router";
 import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout>
-	<QuizForm client:load />
+	<Router client:only="react" />
 </Layout>
