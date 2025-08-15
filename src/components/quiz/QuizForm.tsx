@@ -18,10 +18,17 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { BookOpen, Brain, Globe } from "lucide-react";
+import { useQuiz } from "@/hooks/useQuiz";
 
 export function QuizForm() {
+	const { quizInfo, setQuizInfo, handleQuizGeneration } = useQuiz();
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+
+		const { topic, level, language } = quizInfo;
+
+		handleQuizGeneration(topic, level, language);
 	};
 
 	return (
@@ -46,16 +53,19 @@ export function QuizForm() {
 				<CardContent>
 					<form onSubmit={handleSubmit} className="space-y-6">
 						<div className="space-y-2">
-							<Label htmlFor="theme" className="flex items-center gap-2">
+							<Label htmlFor="topic" className="flex items-center gap-2">
 								<BookOpen className="w-4 h-4 text-primary" />
 								Theme
 							</Label>
 							<Input
-								id="theme"
+								id="topic"
+								name="topic"
 								type="text"
 								placeholder="E.g.: History, Science, Sports..."
-								// value={tema}
-								// onChange={(e) => setTema(e.target.value)}
+								value={quizInfo.topic}
+								onChange={(e) =>
+									setQuizInfo({ ...quizInfo, topic: e.target.value })
+								}
 								className="border-primary/20 focus:border-primary"
 								required
 							/>
@@ -67,8 +77,10 @@ export function QuizForm() {
 								Level
 							</Label>
 							<Select
-								// value={nivel}
-								// onValueChange={setNivel}
+								value={quizInfo.level}
+								onValueChange={(value) =>
+									setQuizInfo({ ...quizInfo, level: value })
+								}
 								required
 							>
 								<SelectTrigger className="border-primary/20 focus:border-primary w-full">
@@ -104,17 +116,19 @@ export function QuizForm() {
 						</div>
 
 						<div className="space-y-2">
-							<Label htmlFor="idioma" className="flex items-center gap-2">
+							<Label htmlFor="language" className="flex items-center gap-2">
 								<Globe className="w-4 h-4 text-primary" />
-								Idioma
+								Language
 							</Label>
 							<Select
-								// value={idioma}
-								// onValueChange={setIdioma}
+								value={quizInfo.language}
+								onValueChange={(value) =>
+									setQuizInfo({ ...quizInfo, language: value })
+								}
 								required
 							>
 								<SelectTrigger className="border-primary/20 focus:border-primary w-full">
-									<SelectValue placeholder="Selecciona el idioma" />
+									<SelectValue placeholder="Select the language" />
 								</SelectTrigger>
 								<SelectContent className="bg-surface border-0">
 									<SelectItem
@@ -136,14 +150,14 @@ export function QuizForm() {
 										value="fr"
 									>
 										<span className="text-[10px]">FR</span>
-										<span>Frances</span>
+										<span>Français</span>
 									</SelectItem>
 									<SelectItem
 										className="text-primary dark:focus:text-surface"
 										value="pt"
 									>
 										<span className="text-[10px]">PT</span>
-										<span>Portugais</span>
+										<span>Português</span>
 									</SelectItem>
 								</SelectContent>
 							</Select>
