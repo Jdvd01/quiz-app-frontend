@@ -30,4 +30,9 @@ export interface VerifiedQuestion {
 	userAnswer: string;
 }
 
+export interface UserResultsData {
+	questions: Question[];
+	userAnswers: UserAnswers;
+}
+
 export type UserAnswers = Record<string, string>;
