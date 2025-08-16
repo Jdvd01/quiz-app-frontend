@@ -12,14 +12,15 @@ export function QuizQuestion() {
 	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
 	const { quiz, quizInfo, currentQuestion, handleNextQuestion } = useQuiz();
-	console.log({
-		quiz,
-		quizInfo,
-	});
 
 	const totalQuestions = quiz.questions.length;
 
 	const progressPercentage = (currentQuestion.id / totalQuestions) * 100;
+
+	function handleNext() {
+		setSelectedAnswer(null);
+		handleNextQuestion();
+	}
 
 	return (
 		<div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -36,7 +37,7 @@ export function QuizQuestion() {
 							>
 								{quizInfo.topic}
 							</Badge>
-							<p className="text-sm text-muted-foreground capitalize">
+							<p className="text-sm text-secondary capitalize">
 								{quizInfo.level} • {quizInfo.language}
 							</p>
 						</div>
@@ -45,7 +46,7 @@ export function QuizQuestion() {
 						<Badge variant="outline" className="border-primary/30 text-primary">
 							{currentQuestion.id} de {totalQuestions}
 						</Badge>
-						<p className="text-sm text-muted-foreground mt-1">
+						<p className="text-sm text-secondary mt-1">
 							{Math.round(progressPercentage)}% completado
 						</p>
 					</div>
@@ -68,10 +69,10 @@ export function QuizQuestion() {
 							<button
 								key={index}
 								onClick={() => setSelectedAnswer(index)}
-								className={`group p-4 text-left rounded-xl border-2 transition-all duration-300 hover:shadow-md ${
+								className={`group p-4 text-left rounded-xl border-1 transition-all duration-300 hover:shadow-md cursor-pointer ${
 									selectedAnswer === index
-										? "border-primary bg-primary/10 shadow-md transform scale-[1.02]"
-										: "border-border hover:border-primary/50 hover:bg-accent/50"
+										? "border-primary bg-primary/10 shadow-md transform scale-[1.01]"
+										: "border-none hover:border-primary/50 hover:bg-accent/50"
 								}`}
 							>
 								<div className="flex items-center space-x-4">
@@ -95,9 +96,9 @@ export function QuizQuestion() {
 					</div>
 
 					<Button
-						onClick={handleNextQuestion}
+						onClick={handleNext}
 						disabled={selectedAnswer === null}
-						className="w-full mt-8 bg-primary hover:bg-primary/90 text-surface font-semibold py-3 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200"
+						className="w-full mt-8 bg-primary hover:bg-primary/90 text-surface font-semibold py-3 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
 					>
 						{currentQuestion.id === totalQuestions
 							? "🎯 Finalizar Quiz"

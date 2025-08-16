@@ -38,7 +38,7 @@ export function QuizForm() {
 					<Brain className="w-8 h-8 text-primary" />
 				</div>
 				<h1 className="text-3xl font-bold text-primary mb-2">Quiz App</h1>
-				<p className="text-muted-foreground">Test your knowledge</p>
+				<p className="text-secondary">Test your knowledge</p>
 			</div>
 
 			<Card className="border-primary/20 shadow-lg bg-surface">
