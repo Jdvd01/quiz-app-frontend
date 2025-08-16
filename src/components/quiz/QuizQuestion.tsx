@@ -57,7 +57,7 @@ export function QuizQuestion() {
 				</div>
 			</div>
 
-			<Card className="border-primary/20 shadow-lg">
+			<Card className="border-primary/20 shadow-lg bg-surface">
 				<CardHeader>
 					<CardTitle className="text-xl leading-relaxed text-foreground">
 						{currentQuestion.question}

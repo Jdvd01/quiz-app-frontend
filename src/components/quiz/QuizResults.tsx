@@ -42,7 +42,7 @@ export function QuizResults() {
 
 	return (
 		<div className="container mx-auto px-4 pb-8 pt-20 max-w-4xl">
-			<Card className="mb-8 border-primary/20 shadow-xl">
+			<Card className="mb-8 border-primary/20 shadow-xl bg-surface">
 				<CardHeader className="text-center pb-4">
 					<div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
 						<scoreBadge.icon className="w-10 h-10 text-primary" />
@@ -111,7 +111,7 @@ export function QuizResults() {
 					return (
 						<Card
 							key={item.id}
-							className="overflow-hidden border-primary/20 shadow-md hover:shadow-lg transition-shadow duration-200"
+							className="overflow-hidden border-primary/20 shadow-md hover:shadow-lg transition-shadow duration-200 bg-surface"
 						>
 							<CardHeader className="pb-4">
 								<div className="flex items-start justify-between">
