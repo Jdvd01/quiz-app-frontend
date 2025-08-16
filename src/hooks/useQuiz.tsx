@@ -1,25 +1,14 @@
 "use client";
 
-import { GeneratedQuiz, Question, QuizInfo } from "@/utils/types";
+import {
+	initialQuestionValue,
+	initialQuizInfoValue,
+	initialQuizValue,
+	initialResultsValue,
+} from "@/utils/initialValues";
+import { GeneratedQuiz, Question, QuizInfo, QuizResults } from "@/utils/types";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
-const initialQuizInfoValue = {
-	topic: "",
-	level: "",
-	language: "",
-};
-
-const initialQuestionValue = {
-	id: 1,
-	question: "",
-	options: [],
-};
-
-const initialQuizValue = {
-	topic: "",
-	questions: [],
-};
 
 export const useQuiz = () => {
 	const navigate = useNavigate();
@@ -36,9 +25,16 @@ export const useQuiz = () => {
 		location.state?.currentQuestion || initialQuestionValue
 	);
 
+	const [results, setResults] = useState<QuizResults>(
+		location.state?.results || initialResultsValue
+	);
+
 	// If we dont have info, redirects to "/"
 	useEffect(() => {
-		if (location.pathname === "/quiz" && !location.state?.quiz) {
+		if (
+			(location.pathname === "/quiz" || location.pathname === "/results") &&
+			!location.state?.quiz
+		) {
 			navigate("/");
 		}
 	}, [location.state, location.pathname, navigate]);
@@ -96,8 +92,6 @@ export const useQuiz = () => {
 
 		setQuiz(generatedQuiz);
 
-		console.log("Generating quiz with:", newQuizInfo);
-
 		// Pasar los datos a través del estado de React Router
 		await navigate("/quiz", {
 			state: {
@@ -113,16 +107,53 @@ export const useQuiz = () => {
 		const nextQuestion = quiz.questions.find(
 			(item) => item.id == currentQuestion.id + 1
 		);
-		console.log("heey", nextQuestion);
 		setCurrentQuestion(nextQuestion ?? initialQuestionValue);
 	}
 
-	function submitQuiz() {
+	async function submitQuiz() {
 		// API Call
-		console.log("submiting");
-		handleResetQuiz();
-		navigate("/results");
+
+		const resultsData = {
+			total: 2,
+			correct: 1,
+			incorrect: 1,
+			percentage: 50,
+			results: [
+				{
+					id: 1,
+					question:
+						"¿Qué palabra clave se usa para declarar una variable que no debe cambiar su valor?",
+					isCorrect: true,
+					userAnswer: "const",
+				},
+				{
+					id: 2,
+					question: "¿Cuál es el tipo de dato que representa un texto?",
+					isCorrect: false,
+					userAnswer: "string",
+				},
+				{
+					id: 3,
+					question: "¿Qué hace console.log('Hola')?",
+					isCorrect: true,
+					userAnswer: "Muestra 'Hola' en la consola",
+				},
+			],
+		};
+
+		setResults(resultsData);
+
+		await navigate("/results", {
+			state: {
+				quizInfo,
+				quiz,
+				currentQuestion,
+				results: resultsData,
+			},
+		});
 	}
+
+	const totalQuestions = quiz.questions.length;
 
 	return {
 		quizInfo,
@@ -134,6 +165,7 @@ export const useQuiz = () => {
 		setQuiz,
 		handleNextQuestion,
 		handleQuizGeneration,
-		submitQuiz,
+		totalQuestions,
+		results,
 	};
 };
