@@ -89,7 +89,7 @@ export function QuizResults() {
 
 					<Button
 						onClick={handleResetQuiz}
-						className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-3 h-12 shadow-lg hover:shadow-xl transition-all duration-200"
+						className="bg-primary hover:bg-primary/90 text-surface font-semibold px-8 py-3 h-12 shadow-lg hover:shadow-xl transition-all duration-200"
 					>
 						<RotateCcw className="w-5 h-5 mr-2" />
 						Take another quiz
@@ -141,7 +141,7 @@ export function QuizResults() {
 									<div
 										className={`p-4 rounded-xl border-2 transition-all duration-200 ${
 											item.isCorrect
-												? "border-border bg-muted/30"
+												? "border-border bg-muted/30 bg-green-50 border-green-500 dark:border-green-400 dark:bg-green-900/20"
 												: "border-red-500 bg-red-50 dark:bg-red-900/20 dark:border-red-400"
 										}`}
 									>
