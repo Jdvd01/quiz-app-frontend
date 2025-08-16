@@ -50,17 +50,17 @@ export function QuizResults() {
 					<CardTitle className="text-3xl font-bold mb-4 text-primary">
 						Quiz Results
 					</CardTitle>
-					<div className="flex items-center justify-center gap-4 flex-wrap">
+					<div className="flex items-center justify-center gap-4 flex-wrap ">
 						<Badge
-							variant="secondary"
-							className="bg-primary/10 text-primary border-primary/20"
+							variant="outline"
+							className="text-primary border-primary/20 text-sm"
 						>
 							📖 {quizInfo.topic}
 						</Badge>
-						<Badge variant="outline" className="border-primary/30">
+						<Badge variant="outline" className="border-primary/30 text-sm">
 							🎯 {quizInfo.level}
 						</Badge>
-						<Badge variant="outline" className="border-primary/30">
+						<Badge variant="outline" className="border-primary/30 text-sm">
 							🌍 {quizInfo.language}
 						</Badge>
 					</div>

@@ -23,7 +23,7 @@ export function QuizQuestion() {
 	}
 
 	return (
-		<div className="container mx-auto px-4 py-8 max-w-2xl">
+		<div className="container mx-auto pb-8 md:pt-8 pt-20 max-w-2xl">
 			<div className="mb-8">
 				<div className="flex items-center justify-between mb-6">
 					<div className="flex items-center gap-3">
@@ -75,16 +75,16 @@ export function QuizQuestion() {
 										: "border-none hover:border-primary/50 hover:bg-accent/50"
 								}`}
 							>
-								<div className="flex items-center space-x-4">
+								<div className="flex items-center space-x-4 gap-4">
 									<div
-										className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+										className={`w-5 h-5 aspect-square m-0 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
 											selectedAnswer === index
 												? "border-primary bg-primary shadow-sm"
 												: "border-secondary group-hover:border-primary/70"
 										}`}
 									>
 										{selectedAnswer === index && (
-											<div className="w-2.5 h-2.5 rounded-full bg-primary" />
+											<div className="w-2.5 h-2.5 aspect-square rounded-full bg-primary" />
 										)}
 									</div>
 									<span className="font-medium text-primary group-hover:text-primary transition-colors">
