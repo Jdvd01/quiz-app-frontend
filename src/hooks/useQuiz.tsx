@@ -6,7 +6,13 @@ import {
 	initialQuizValue,
 	initialResultsValue,
 } from "@/utils/initialValues";
-import { GeneratedQuiz, Question, QuizInfo, QuizResults } from "@/utils/types";
+import {
+	GeneratedQuiz,
+	Question,
+	QuizInfo,
+	QuizResults,
+	UserAnswers,
+} from "@/utils/types";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -14,7 +20,6 @@ export const useQuiz = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	// Defining values to prevent data inconsistency
 	const [quizInfo, setQuizInfo] = useState<QuizInfo>(
 		location.state?.quizInfo || initialQuizInfoValue
 	);
@@ -28,6 +33,7 @@ export const useQuiz = () => {
 	const [results, setResults] = useState<QuizResults>(
 		location.state?.results || initialResultsValue
 	);
+	const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
 
 	// If we dont have info, redirects to "/"
 	useEffect(() => {
@@ -43,6 +49,8 @@ export const useQuiz = () => {
 		setQuizInfo(initialQuizInfoValue);
 		setQuiz(initialQuizValue);
 		setCurrentQuestion(initialQuestionValue);
+
+		navigate("/");
 	}
 
 	async function handleQuizGeneration(
@@ -50,107 +58,50 @@ export const useQuiz = () => {
 		level: string,
 		language: string
 	) {
-		const newQuizInfo = { topic, level, language };
-		setQuizInfo(newQuizInfo);
+		try {
+			const newQuizInfo = { topic, level, language };
+			setQuizInfo(newQuizInfo);
 
-		// Aquí puedes hacer la llamada a la API directamente
-		// Por ejemplo:
-		// const response = await fetch('/api/generate-quiz', {
-		//   method: 'POST',
-		//   headers: { 'Content-Type': 'application/json' },
-		//   body: JSON.stringify(newQuizInfo)
-		// });
-		// const generatedQuiz = await response.json();
-		// setQuiz(generatedQuiz);
-
-		const generatedQuiz = {
-			topic: "JavaScript",
-			questions: [
-				{
-					id: 1,
-					question:
-						"Quelle est la principale difference de portee entre var, let et const ?",
-					options: [
-						"var a une portee fonction, let/const une portee bloc",
-						"var et let ont une portee bloc, const a une portee globale",
-						"Tous ont une portee globale",
-						"const a une portee module, var une portee bloc, let une portee fonction",
-					],
+			await navigate("/loading", {
+				state: {
+					quizInfo: newQuizInfo,
+					action: "generate",
 				},
-				{
-					id: 2,
-					question: "Que fait 'use strict' dans un fichier JavaScript ?",
-					options: [
-						"Active un mode plus strict qui interdit certaines pratiques et change certains comportements",
-						"Optimise automatiquement le code pour la performance",
-						"Charge le module strict depuis npm",
-						"Convertit tout le code en TypeScript",
-					],
-				},
-			],
-		};
-
-		setQuiz(generatedQuiz);
-
-		// Pasar los datos a través del estado de React Router
-		await navigate("/quiz", {
-			state: {
-				quizInfo: newQuizInfo,
-				quiz: generatedQuiz,
-				currentQuestion: generatedQuiz.questions[0],
-			},
-		});
+			});
+		} catch (error) {
+			console.error("Error generating quiz:", error);
+			throw error;
+		}
 	}
 
 	function handleNextQuestion() {
-		if (currentQuestion.id === quiz.questions.length) return submitQuiz();
 		const nextQuestion = quiz.questions.find(
 			(item) => item.id == currentQuestion.id + 1
 		);
-		setCurrentQuestion(nextQuestion ?? initialQuestionValue);
+		if (!nextQuestion) return;
+		setCurrentQuestion(nextQuestion);
 	}
 
-	async function submitQuiz() {
-		// API Call
+	async function handleAnswerQuestion(index: number, answer: string) {
+		const newData = { ...userAnswers, [index]: answer };
+		await setUserAnswers(newData);
+	}
 
-		const resultsData = {
-			total: 2,
-			correct: 1,
-			incorrect: 1,
-			percentage: 50,
-			results: [
-				{
-					id: 1,
-					question:
-						"¿Qué palabra clave se usa para declarar una variable que no debe cambiar su valor?",
-					isCorrect: true,
-					userAnswer: "const",
-				},
-				{
-					id: 2,
-					question: "¿Cuál es el tipo de dato que representa un texto?",
-					isCorrect: false,
-					userAnswer: "string",
-				},
-				{
-					id: 3,
-					question: "¿Qué hace console.log('Hola')?",
-					isCorrect: true,
-					userAnswer: "Muestra 'Hola' en la consola",
-				},
-			],
-		};
+	async function submitQuiz(answersOverride?: UserAnswers) {
+		try {
+			const finalAnswers = answersOverride || userAnswers;
 
-		setResults(resultsData);
-
-		await navigate("/results", {
-			state: {
-				quizInfo,
-				quiz,
-				currentQuestion,
-				results: resultsData,
-			},
-		});
+			await navigate("/loading", {
+				state: {
+					quizInfo,
+					quiz,
+					userAnswers: finalAnswers,
+				},
+			});
+		} catch (error) {
+			console.error("Error submitting quiz:", error);
+			throw error;
+		}
 	}
 
 	const totalQuestions = quiz.questions.length;
@@ -164,8 +115,11 @@ export const useQuiz = () => {
 		quiz,
 		setQuiz,
 		handleNextQuestion,
+		handleAnswerQuestion,
 		handleQuizGeneration,
 		totalQuestions,
 		results,
+		userAnswers,
+		submitQuiz,
 	};
 };

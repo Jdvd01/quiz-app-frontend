@@ -11,15 +11,37 @@ import { useQuiz } from "@/hooks/useQuiz";
 export function QuizQuestion() {
 	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
-	const { quiz, quizInfo, currentQuestion, handleNextQuestion } = useQuiz();
+	const {
+		quiz,
+		quizInfo,
+		currentQuestion,
+		handleNextQuestion,
+		handleAnswerQuestion,
+		userAnswers,
+		submitQuiz,
+	} = useQuiz();
 
 	const totalQuestions = quiz.questions.length;
 
 	const progressPercentage = (currentQuestion.id / totalQuestions) * 100;
 
-	function handleNext() {
+	async function handleNext() {
+		const currentAnswer = currentQuestion.options[selectedAnswer ?? 0];
+
+		await handleAnswerQuestion(currentQuestion.id, currentAnswer);
+
 		setSelectedAnswer(null);
-		handleNextQuestion();
+
+		if (currentQuestion.id === quiz.questions.length) {
+			const allAnswers = {
+				...userAnswers,
+				[currentQuestion.id]: currentAnswer,
+			};
+
+			await submitQuiz(allAnswers);
+		} else {
+			handleNextQuestion();
+		}
 	}
 
 	return (
@@ -71,7 +93,7 @@ export function QuizQuestion() {
 								onClick={() => setSelectedAnswer(index)}
 								className={`group p-4 text-left rounded-xl border-1 transition-all duration-300 hover:shadow-md cursor-pointer ${
 									selectedAnswer === index
-										? "border-primary bg-primary/10 shadow-md transform scale-[1.01]"
+										? "border-primary bg-primary/10 shadow-md transform"
 										: "border-none hover:border-primary/50 hover:bg-accent/50"
 								}`}
 							>
